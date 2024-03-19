@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "storageAccountName": {
-            "value": "erc-ps-globostg001" 
+            "value": "erc0ps0globostg001" 
         },
         "location": {
             "value": "eastus"
