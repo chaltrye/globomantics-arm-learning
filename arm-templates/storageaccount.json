@@ -20,7 +20,7 @@
                 "description": "Enter the storage account sku"
             }
         }
-    },
+    }, 
     "functions": [],
     "variables": {},
     "resources": [
