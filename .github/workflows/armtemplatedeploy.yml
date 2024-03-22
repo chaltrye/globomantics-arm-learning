@@ -10,8 +10,8 @@ on:
   workflow_dispatch:
 
 env:
-  resource_group_name: rg-gethubactions
-  location: "eastus"
+  resource_group_name: rg-githubactions
+  location: eastus
   subscriptionId: 7bf02640-86d1-4a5d-a094-4f15f0d06661
 
 jobs:
