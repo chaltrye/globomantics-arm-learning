@@ -35,6 +35,8 @@ jobs:
             subscriptionId: ${{ env.subscriptionId }}
             region: ${{ env.location }}
             template: ./arm-templates/resourcegroup.json
+              location="${{ env.location }}"
+              resourceGroupName=${{ env.resource_group_name }}
             deploymentName: ${{ env.resource_group_name }}
             
       - name: Deploy Storage Account
@@ -57,6 +59,6 @@ jobs:
             template: ./arm-templates/virtualmachine.json
             parameters: 
               adminPassword=${{ secrets.UBUNTU_ADMIN_PASSWORD }}
-              location= ${{ env.location }}
+              location= "${{ env.location }}"
             deploymentMode: incremental
       
