@@ -29,26 +29,27 @@ jobs:
           - name: Deploy Resource Group
             uses: Azure/cli@1.0.4
             with:
-                inlineScript: |
-                  az deployment sub create \
-                  --name ${{ env.resource_group_name }} \
-                  --location "${{ env.location }}" \
-                  --template-file ./bicep-templates/resourcegroup.bicep \
-                  --parameters \
-                  resourceGroupName=${{ env.resource_group_name }} \
-                  location=${{ env.location }} 
-
+              inlineScript: |
+                az deployment sub create \
+                --name ${{ env.resource_group_name }} \
+                --location "${{ env.location }}" \
+                --template-file ./bicep-templates/resourcegroup.bicep \
+                --parameters \
+                resourceGroupName=${{ env.resource_group_name }} \
+                location="${{ env.location }}"
+      
           - name: Deploy virtual network
             uses: Azure/cli@1.0.4
-            with: 
-                inlineScript: |
-                  az deployment group create \
-                  --resource-group ${{ env.resouce_group_name }} \
-                  --template-file ./bicep-templates/virtualnetwork.bicep \
-                  --parameters \
-                  vNetPrefix=bicepazcli
-                  location="${{env.location }}"
-    
+            with:
+              inlineScript: |
+                az deployment group create \
+                --resource-group ${{ env.resource_group_name }} \
+                --template-file ./bicep-templates/virtualnetwork.bicep \
+                --parameters \
+                vNetPrefix=bicepazcli \
+                location="${{ env.location }}"
+
+
     bicepArmDeployAction:
         name: Bicep arm-deploy Deploy Job
         runs-on: ubuntu-latest
