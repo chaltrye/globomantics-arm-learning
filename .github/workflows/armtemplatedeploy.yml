@@ -9,7 +9,11 @@ on:
       - main
   workflow_dispatch:
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+env:
+  resource_group_name: rg-gethubactions
+  location: "eastus"
+  subscriptionId: 7bf02640-86d1-4a5d-a094-4f15f0d06661
+
 jobs:
   
   armDeploy:
@@ -24,22 +28,22 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: Deploy Resource Group rg-gethubactions
+      - name: Deploy Resource Group ${{ env.resource_group_name }}
         uses: Azure/arm-deploy@v2
         with: 
             scope: subscription
-            subscriptionId: 7bf02640-86d1-4a5d-a094-4f15f0d06661
-            region: eastus
+            subscriptionId: ${{ env.subscriptionId }}
+            region: ${{ env.location }}
             template: ./arm-templates/resourcegroup.json
-            deploymentName: rg-gethubactions
+            deploymentName: ${{ env.resource_group_name }}
             
       - name: Deploy Storage Account
         uses: Azure/arm-deploy@v2
         id: storageAccountDeploy
         with: 
             scope: resourcegroup
-            resourceGroupName: rg-githubactions
-            subscriptionId: 7bf02640-86d1-4a5d-a094-4f15f0d06661
+            resourceGroupName: ${{ env.resource_group_name }}
+            subscriptionId: ${{ env.subscriptionId }}
             template: ./arm-templates/storageaccount.json
             parameters: ./arm-templates/storageaccount.parameters.json
             deploymentMode: incremental
@@ -48,10 +52,11 @@ jobs:
         uses: Azure/arm-deploy@v2
         with: 
             scope: resourcegroup
-            resourceGroupName: rg-githubactions
-            subscriptionId: 7bf02640-86d1-4a5d-a094-4f15f0d06661
+            resourceGroupName: ${{ env.resource_group_name }}
+            subscriptionId: ${{ env.subscriptionId }}
             template: ./arm-templates/virtualmachine.json
             parameters: 
-              adminPassword="My$ecureP@ssword!"
+              adminPassword=${{ secrets.UBUNTU_ADMIN_PASSWORD }}
+              location= ${{ env.location }}
             deploymentMode: incremental
       
